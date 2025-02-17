@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        form { margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; }
+        label { font-weight: bold; }
+        input, textarea { width: 100%; padding: 8px; margin: 5px 0; }
+        button { padding: 8px 15px; background: blue; color: white; border: none; cursor: pointer; }
+        button:hover { background: darkblue; }
+    </style>
+</head>
+<body>
+
+    <h1>Admin Panel</h1>
+
+    <!-- Project Form -->
+    <form id="projectForm">
+        <h2>Add Project</h2>
+        <label>Title:</label><input type="text" id="projectTitle">
+        <label>Description:</label><textarea id="projectDescription"></textarea>
+        <label>GitHub Link:</label><input type="text" id="projectGitLink">
+        <label>Website Link:</label><input type="text" id="projectWebLink">
+        <label>Image URL:</label><input type="text" id="projectImage">
+        <button type="button" onclick="submitProject()">Submit</button>
+    </form>
+
+    <!-- Achievement Form -->
+    <form id="achievementForm">
+        <h2>Add Achievement</h2>
+        <label>Title:</label><input type="text" id="achievementTitle">
+        <label>Description:</label><textarea id="achievementDescription"></textarea>
+        <label>Link:</label><input type="text" id="achievementLink">
+        <label>Image URL:</label><input type="text" id="achievementImage">
+        <button type="button" onclick="submitAchievement()">Submit</button>
+    </form>
+
+    <!-- About Form -->
+    <form id="aboutForm">
+        <h2>Update About</h2>
+        <label>Description:</label><textarea id="aboutDescription"></textarea>
+        <button type="button" onclick="submitAbout()">Submit</button>
+    </form>
+
+    <!-- Resume Form -->
+    <form id="resumeForm">
+        <h2>Update Resume</h2>
+        <label>Resume URL:</label><input type="text" id="resumeUrl">
+        <button type="button" onclick="submitResume()">Submit</button>
+    </form>
+
+    <script>
+        const API_BASE_URL = "http://localhost:8080/api";
+
+        async function submitProject() {
+            const data = {
+                title: document.getElementById("projectTitle").value,
+                description: document.getElementById("projectDescription").value,
+                gitlink: document.getElementById("projectGitLink").value,
+                weblink: document.getElementById("projectWebLink").value,
+                image: document.getElementById("projectImage").value
+            };
+            await sendData("/projects", data);
+        }
+
+        async function submitAchievement() {
+            const data = {
+                title: document.getElementById("achievementTitle").value,
+                description: document.getElementById("achievementDescription").value,
+                link: document.getElementById("achievementLink").value,
+                image: document.getElementById("achievementImage").value
+            };
+            await sendData("/achievements", data);
+        }
+
+        async function submitAbout() {
+            const data = { description: document.getElementById("aboutDescription").value };
+            await sendData("/about", data);
+        }
+
+        async function submitResume() {
+            const data = { url: document.getElementById("resumeUrl").value };
+            await sendData("/resume", data);
+        }
+
+        async function sendData(endpoint, data) {
+            try {
+                const response = await fetch(API_BASE_URL + endpoint, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                alert(result.message || "Success!");
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Error submitting data.");
+            }
+        }
+    </script>
+
+</body>
+</html>
