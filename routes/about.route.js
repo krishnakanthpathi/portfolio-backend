@@ -1,4 +1,5 @@
 import { Router } from "express";
+import About from "../models/about.model.js";
 
 const aboutRoute = Router();
 
@@ -12,9 +13,15 @@ aboutRoute.post("/" , (req , res) => {
         if (!description ) {
             res.status(400).json({ message: "All fields are required" });
         }else{
-            res.json({
-                description
+            const newAbout = new About({
+                description,
             });
+            newAbout.save();
+            res.status(200).json({ 
+                message: "About Created Successfully " ,
+                data: newAbout
+            });
+            console.log(newAbout);
         }
     }
     catch (error) {

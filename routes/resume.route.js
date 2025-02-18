@@ -1,4 +1,5 @@
 import { Router } from "express";
+import Resume from "../models/resume.model.js";
 
 const resumeRoute = Router();
 
@@ -9,8 +10,14 @@ resumeRoute.post("/" , (req , res) => {
         if (!url) {
             res.status(400).json({ message: "All fields are required" });
         }else{
-            res.json({
+            const resume = new Resume({
                 url
+            });
+            resume.save();
+            console.log("successfully added resume");
+            res.status(200).json({ 
+                message: "Resume added successfully" ,
+                data : resume
             });
         }
     } catch (error) {
