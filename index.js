@@ -18,7 +18,10 @@ import About from "./models/about.model.js";
 const app = express();
 const __dirname = path.resolve();
 
-app.use(cors());
+app.use(cors({
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+}));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json({ limit: "10mb" }));
 dotenv.config();
@@ -67,7 +70,7 @@ app.get("/resume" ,async (req , res) => {
 });
 // post routes
 
-app.use("/api/projects" , projectsRouter    );
+app.use("/api/projects" , projectsRouter);
 app.use("/api/achievements" , achievementsRouter);
 app.use("/api/about" , aboutRoute);
 app.use("/api/resume" , resumeRoute);
