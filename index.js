@@ -1,116 +1,34 @@
 import express from "express";
 import dotenv from "dotenv";
 import path from "path";
+import cors from "cors";
+
+import resumeRoute from "./routes/resume.route.js";
+import aboutRoute from "./routes/about.route.js";
+import achievementsRouter from "./routes/achievements.route.js";
+import projectsRouter from "./routes/projects.route.js";
 
 const app = express();
 const __dirname = path.resolve();
 
+app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 dotenv.config();
 
 const PORT = process.env.PORT ;
 
+
 app.get("/" , (req , res) => {
     res.sendFile(__dirname + "/index.html");
 });
 
-app.get("/api/", (req, res) => {
-    res.json({ message: "Hello World" });
-})
 
-app.post("/api/projects" , (req , res) => {
-    const {
-        title,
-        description,
-        gitlink,
-        weblink,
-        image,
-    } = req.body;
-    console.log(req.body);
-    try {
-        if (!title || !description || !gitlink || !weblink || !image) {
-            res.status(400).json({ message: "All fields are required" });
-        } else {
-            res.json({
-                title,
-                description,
-                gitlink,
-                weblink,
-                image,
-            });
-        }   
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Server Error" });  
-    }
-}
-)
 
-app.post("/api/achievements" , (req , res) => {
-    const {
-        title,
-        description,
-        link,  
-        image
-    } = req.body;
-    console.log(req.body);
-    try {
-        if (!title || !description || !link || !image) {
-            res.status(400).json({ message: "All fields are required" });
-        }else{
-            res.json({
-                title,
-                description,
-                link,
-                image
-            });
-        }
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Server Error" });  
-        
-    }
-})  
-
-app.post("/api/about" , (req , res) => {
-    const {
-        description,
-    } = req.body;
-    console.log(description);
-    try {
-        if (!description ) {
-            res.status(400).json({ message: "All fields are required" });
-        }else{
-            res.json({
-                description
-            });
-        }
-    }
-    catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Server Error" });  
-        
-    }
-} )
-
-app.post("/api/resume" , (req , res) => {
-    const { url } = req.body;   
-    console.log(req.body);
-    try {
-        if (!url) {
-            res.status(400).json({ message: "All fields are required" });
-        }else{
-            res.json({
-                url
-            });
-        }
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Server Error" });  
-        
-    }
-})
+app.use("/api/projects" , projectsRouter    );
+app.use("/api/achievements" , achievementsRouter);
+app.use("/api/about" , aboutRoute);
+app.use("/api/resume" , resumeRoute);
 
 
 app.listen(8080 , () =>{
