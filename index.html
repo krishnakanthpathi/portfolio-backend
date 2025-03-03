@@ -113,7 +113,7 @@
     </div>
 
     <script>
-        const API_BASE_URL = "https://portfolio-backend-bs6x.onrender.com/api";
+        const API_URL = "https://portfolio-backend-bs6x.onrender.com/api";
 
         async function submitProject() {
             const data = {
@@ -148,7 +148,7 @@
 
         async function sendData(endpoint, data) {
             try {
-                const response = await fetch(API_BASE_URL + endpoint, {
+                const response = await fetch(API_URL + endpoint, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(data)

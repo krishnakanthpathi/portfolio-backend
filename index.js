@@ -3,27 +3,28 @@ import dotenv from "dotenv";
 import path from "path";
 import cors from "cors";
 
+// post routes
 import resumeRoute from "./routes/resume.route.js";
 import aboutRoute from "./routes/about.route.js";
 import achievementsRouter from "./routes/achievements.route.js";
 import projectsRouter from "./routes/projects.route.js";
-import connnectDB from "./config/mongodb.config.js";
 
-// models
-import Project from "./models/projects.model.js";
-import Achievements from "./models/achievements.model.js";
-import Resume from "./models/resume.model.js";
-import About from "./models/about.model.js";
+// get routes
+import getProjectsRouter from "./routes/projects.get.route.js";
+import getAchievementsRouter from "./routes/achievements.get.route.js";
+import getAboutRouter from "./routes/about.get.route.js";
+import getResumeRouter from "./routes/resume.get.route.js";
+
+// database connection
+import connnectDB from "./config/mongodb.config.js";
 
 const app = express();
 const __dirname = path.resolve();
 
-app.use(cors({
-    origin: "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-}));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(cors());
 app.use(express.json({ limit: "10mb" }));
+
+
 dotenv.config();
 connnectDB();
 
@@ -33,43 +34,13 @@ app.get("/" , (req , res) => {
     res.sendFile(__dirname + "/index.html");
 });
 
-app.get("/projects", async (req, res) => {
-    try {
-        const projects = await Project.find({}); 
-        res.json(projects);
-    } catch (error) {
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-});
+// get routes
+app.use("/projects", getProjectsRouter );
+app.use("/achievements" , getAchievementsRouter);
+app.use("/about" , getAboutRouter);
+app.get("/resume" , getResumeRouter);
 
-app.get("/achievements" , async (req , res) => {
-    try {
-        const achievements = await Achievements.find({});
-        res.json(achievements);
-    } catch (error) {
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-});
-
-app.get("/about" , async (req , res) => {
-    try {
-        const about = await About.find({});
-        res.json(about);
-    } catch (error) {
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-});
-
-app.get("/resume" ,async (req , res) => {
-    try {
-        const resume = await Resume.find({});
-        res.json(resume);
-    } catch (error) {
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-});
 // post routes
-
 app.use("/api/projects" , projectsRouter);
 app.use("/api/achievements" , achievementsRouter);
 app.use("/api/about" , aboutRoute);
