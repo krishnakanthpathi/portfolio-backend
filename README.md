@@ -1,4 +1,4 @@
-# 🖥️ Portfolio Backend 🔙
+# 🖥️ Portfolio Backend 
 
 This is the 🔙 for a portfolio 🌐. It provides API 🔗 to manage 📂, 🏆, ℹ️, and 📄. The 🔙 is built using 🟢 Node.js, 🚀 Express.js, and 🍃 MongoDB.
 
