@@ -18,6 +18,9 @@ import getResumeRouter from "./routes/resume.get.route.js";
 // database connection
 import connnectDB from "./config/mongodb.config.js";
 
+connnectDB();
+dotenv.config();
+
 const app = express();
 const __dirname = path.resolve();
 
@@ -25,8 +28,6 @@ app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 
 
-dotenv.config();
-connnectDB();
 
 const PORT = process.env.PORT ;
 
