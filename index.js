@@ -39,7 +39,7 @@ app.get("/" , (req , res) => {
 app.use("/projects", getProjectsRouter );
 app.use("/achievements" , getAchievementsRouter);
 app.use("/about" , getAboutRouter);
-app.get("/resume" , getResumeRouter);
+app.use("/resume" , getResumeRouter);
 
 // post routes
 app.use("/api/projects" , projectsRouter);
